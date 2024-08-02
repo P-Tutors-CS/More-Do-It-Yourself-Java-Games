@@ -1,0 +1,97 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Java Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Run Java Application from Web</h1>
+    <button onclick="runJavaApp()">Run Java Application</button>
+    <pre id="output"></pre>
+
+    <script>
+        function runJavaApp() {
+            fetch('/run-java')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('output').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('output').innerText = `Error: ${error}`;
+                });
+        }
+    </script>
+</body>
+
+</html> -->
+
+
+<!-- no pop out version -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Java Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        #output {
+            white-space: pre-wrap;
+            /* Preserve whitespace and line breaks */
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Run Java Application from Web</h1>
+    <button onclick="runJavaApp()">Run Java Application</button>
+    <div id="output"></div>
+
+    <script>
+        function runJavaApp() {
+            fetch('/run-java')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('output').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('output').innerText = `Error: ${error}`;
+                });
+        }
+    </script>
+</body>
+
+</html>
