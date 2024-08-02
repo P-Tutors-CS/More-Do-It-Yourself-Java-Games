@@ -1,7 +1,5 @@
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +11,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+/**
+ * variant of the "Lights Out" puzzle game.
+ * The goal of the game is to form a specific pattern by clicking tiles to
+ * toggle their state.
+ * In this case, the objective is to form a frame of lights, with the center
+ * tile turned off
+ * and the surrounding tiles turned on.
+ */
 public class Framed extends JFrame {
     private static final long serialVersionUID = 1L;
     public static final int GRIDSIZE = 3;
@@ -76,23 +82,23 @@ public class Framed extends JFrame {
     }
 
     private void endGameifDone() {
-        boolean done = lightButton[0][0].isLit() 
-        && lightButton[0][1].isLit() 
-        && lightButton[0][2].isLit() 
-        && lightButton[1][0].isLit() 
-        && !lightButton[1][1].isLit() 
-        && lightButton[1][2].isLit() 
-        && lightButton[2][0].isLit() 
-        && lightButton[2][1].isLit() 
-        && lightButton[2][2].isLit() ;
+        boolean done = lightButton[0][0].isLit()
+                && lightButton[0][1].isLit()
+                && lightButton[0][2].isLit()
+                && lightButton[1][0].isLit()
+                && !lightButton[1][1].isLit()
+                && lightButton[1][2].isLit()
+                && lightButton[2][0].isLit()
+                && lightButton[2][1].isLit()
+                && lightButton[2][2].isLit();
 
-        if (done){
+        if (done) {
             String message = "Congratulations! You won! Do you want to play again?";
             int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
 
-            if (option == JOptionPane.YES_OPTION){
+            if (option == JOptionPane.YES_OPTION) {
                 newGame();
-            }else{
+            } else {
                 System.exit(0);
             }
         }
@@ -119,7 +125,6 @@ public class Framed extends JFrame {
                         // check if game is over
                         endGameifDone();
                     }
-
 
                 });
                 centerPanel.add(lightButton[row][col]);

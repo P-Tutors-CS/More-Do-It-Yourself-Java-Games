@@ -7,14 +7,14 @@ public class LightButton extends JButton {
     private static final long serialVersionUID = 1L;
 
     private static final int MAXSIZE = 200;
-    private int row =0;
+    private int row = 0;
     private int col = 0;
 
-    public LightButton(int row, int col){
+    public LightButton(int row, int col) {
         this.row = row;
         this.col = col;
         setBackground(Color.BLACK);
-        Dimension  size = new Dimension(MAXSIZE,MAXSIZE);
+        Dimension size = new Dimension(MAXSIZE, MAXSIZE);
         setPreferredSize(size);
     }
 
@@ -26,22 +26,22 @@ public class LightButton extends JButton {
         return col;
     }
 
-    public void turnOn(){
+    public void turnOn() {
         setBackground(Color.RED);
     }
 
-    public void turnOff(){
+    public void turnOff() {
         setBackground(Color.BLACK);
     }
 
-    public boolean isLit(){
+    public boolean isLit() {
         return getBackground().equals(Color.RED);
     }
 
-    public void toggle(){
+    public void toggle() {
         if (isLit()) {
             turnOff();
-        }else{
+        } else {
             turnOn();
         }
     }
