@@ -157,3 +157,26 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
     cd target
     java -jar Framed-1.0-SNAPSHOT-jar-with-dependencies.jar
     ```
+
+5. **Transfer the JAR File to Another Computer**:
+    Copy the `Framed-1.0-SNAPSHOT-jar-with-dependencies.jar` file from the `target` directory to the desired location on the other computer.
+
+6. **Run the JAR File on Another Computer**:
+    Ensure that the target computer has Java installed, then run the JAR file by double-clicking it or using the command line:
+    ```sh
+    java -jar Framed-1.0-SNAPSHOT-jar-with-dependencies.jar
+    ```
+
+### Notes
+
+- Ensure you are in the correct directory before running each command.
+- Replace `path/to/More-Do-It-Yourself-Java-Games` with the actual path to your project directory.
+- The `pom.xml` file specifies the entry point of the application and includes necessary plugins to package the JAR with dependencies.
+- This method ensures that all dependencies are included in the JAR file, making it portable and executable on another computer with Java installed.
+
+### Optional: Creating a Batch File for Windows and Shell Script for Mac/Linux
+
+**Batch File for Windows**:
+- Open a text editor and paste the following line:
+  ```sh
+  java -jar Framed-1.0-SNAPSHOT-jar-with-dependencies.jar
