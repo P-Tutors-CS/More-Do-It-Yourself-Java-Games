@@ -180,3 +180,201 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 - Open a text editor and paste the following line:
   ```sh
   java -jar WatchYourStep-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+
+
+---
+
+<br>
+<br>
+
+---
+
+  To run your Java application from a web interface both locally and when deployed to GitHub Pages and Heroku, you need to create a web application that can interact with your Java code. We will use a simple setup with Java, HTML, and a lightweight server like Spark for the backend. Here's how you can do it:
+
+### 1. Setting Up Your Project for Web Interface
+
+#### Step-by-Step Instructions
+
+1. **Add a New Directory for Web Content**
+    - Navigate to your project directory:
+      ```sh
+      cd path/to/More-Do-It-Yourself-Java-Games/project5WatchYourStep
+      ```
+    - Create a new directory for your web content:
+      ```sh
+      mkdir web
+      ```
+
+2. **Create a Basic HTML File**
+    - Navigate to the `web` directory:
+      ```sh
+      cd web
+      ```
+    - Create an `index.html` file with a basic structure:
+      ```html
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Watch Your Step</title>
+      </head>
+      <body>
+          <h1>Watch Your Step</h1>
+          <button id="startButton">Start Game</button>
+          <div id="gameOutput"></div>
+          <script>
+              document.getElementById('startButton').addEventListener('click', function() {
+                  fetch('/start')
+                      .then(response => response.text())
+                      .then(data => {
+                          document.getElementById('gameOutput').innerText = data;
+                      });
+              });
+          </script>
+      </body>
+      </html>
+      ```
+
+3. **Create a Simple Java Web Server**
+    - Navigate back to your project root directory:
+      ```sh
+      cd ..
+      ```
+    - Add a dependency for Spark in your `pom.xml`:
+      ```xml
+      <dependencies>
+          <dependency>
+              <groupId>com.sparkjava</groupId>
+              <artifactId>spark-core</artifactId>
+              <version>2.9.3</version>
+          </dependency>
+          <!-- Add other dependencies here -->
+      </dependencies>
+      ```
+    - Create a new Java file `WebServer.java` in the `src` directory:
+      ```java
+      import static spark.Spark.*;
+
+      public class WebServer {
+          public static void main(String[] args) {
+              staticFiles.location("/web"); // Serve static files from the web directory
+
+              get("/start", (req, res) -> {
+                  return "Game started!";
+              });
+          }
+      }
+      ```
+
+4. **Compile and Run Your Web Server Locally**
+    - Compile the Java files and include the dependencies:
+      ```sh
+      mvn clean package
+      ```
+    - Run the web server:
+      ```sh
+      java -cp target/WatchYourStep-1.0-SNAPSHOT-jar-with-dependencies.jar WebServer
+      ```
+    - Open a web browser and go to `http://localhost:4567` to see your web interface.
+
+### 2. Deploying to GitHub Pages
+
+GitHub Pages is used for static sites. You can host your HTML, CSS, and JavaScript there.
+
+1. **Create a `gh-pages` Branch**
+    - In your project root directory:
+      ```sh
+      git checkout --orphan gh-pages
+      git rm -rf .
+      git commit --allow-empty -m "Initializing gh-pages branch"
+      git push origin gh-pages
+      git checkout main
+      ```
+
+2. **Add HTML Content to GitHub Pages**
+    - Copy your `web` directory content to the root of the `gh-pages` branch:
+      ```sh
+      git checkout gh-pages
+      cp -r web/* .
+      git add .
+      git commit -m "Add web content"
+      git push origin gh-pages
+      git checkout main
+      ```
+
+3. **Enable GitHub Pages**
+    - Go to your GitHub repository settings.
+    - Scroll down to the "GitHub Pages" section.
+    - Select `gh-pages` branch as the source.
+
+Now, your static web interface should be available at `https://yourusername.github.io/your-repo-name`.
+
+### 3. Deploying to Heroku
+
+Heroku can run your Java web server and serve your application.
+
+1. **Create a `Procfile` for Heroku**
+    - In your project root directory, create a `Procfile` with the following content:
+      ```sh
+      web: java -cp target/WatchYourStep-1.0-SNAPSHOT-jar-with-dependencies.jar WebServer
+      ```
+
+2. **Add a System.properties File**
+    - In the project root directory, create a `system.properties` file to specify the Java runtime:
+      ```sh
+      java.runtime.version=11
+      ```
+
+3. **Deploy to Heroku**
+    - Install the Heroku CLI and log in:
+      ```sh
+      heroku login
+      ```
+    - Create a new Heroku app:
+      ```sh
+      heroku create your-app-name
+      ```
+    - Add a Git remote for Heroku:
+      ```sh
+      git remote add heroku https://git.heroku.com/your-app-name.git
+      ```
+    - Push your code to Heroku:
+      ```sh
+      git push heroku main
+      ```
+    - Open your Heroku app in a web browser:
+      ```sh
+      heroku open
+      ```
+
+### Summary of Directory Structure
+
+```plaintext
+project5WatchYourStep/
+│
+├── bin/
+│   └── *.class
+├── src/
+│   ├── WatchYourStep.java
+│   ├── WebServer.java
+│   └── ...
+├── web/
+│   └── index.html
+├── target/
+│   └── WatchYourStep-1.0-SNAPSHOT-jar-with-dependencies.jar
+├── pom.xml
+├── manifest.txt
+├── Procfile
+├── system.properties
+└── ...
+```
+
+### Final Notes
+
+- Ensure that your web server serves static files correctly.
+- Test your web interface locally before deploying.
+- Make sure to replace placeholders (e.g., `your-app-name`) with actual values.
+
+By following these instructions, you'll be able to run your Java application both locally and on GitHub Pages for the static part and Heroku for the dynamic part.
