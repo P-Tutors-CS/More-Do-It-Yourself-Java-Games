@@ -11,13 +11,17 @@ will slide the clicked tile into that empty space. */
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 public class SlidingTiles extends JFrame {
@@ -38,19 +42,106 @@ public class SlidingTiles extends JFrame {
      * 4. Add a private Bufferedlmage instance variable called image,
      * initialized to null.
      */
-    private static final String FILENAME = "slidingTilesImage.jpg";
+    private static final String FILENAME = "project6SlidingTiles\\slidingTilesImage.jpg";
     private int tileSize = 50;
     private int gridSize = 4;
     private BufferedImage image = null;
 
     /*
+     * Next, add the tile buttons.
+     * 1. Add a private TileButton two-dimensional array instance
+     * variable called tile, with gridSize rows and gridSize columns.
+     * 2. Add a private JPanel instance variable called centerPanel,
+     * initialized by calling JPanel's constructor.
+     */
+    private TileButton[][] tile = new TileButton[gridSize][gridSize];
+    private JPanel centerPanel = new JPanel();
+
+    /*
+     * Divide the image into gridSize rows and gridSize columns of
+     * subimages, and put each subimage in a tile button in the center
+     * panel.
+     * 
+     * 1. Create a new private method called dividelmage(). It should take
+     * no parameters and return nothing.
+     * 
+     * 2. Set the layout for centerPanel to a new GridLayout, with gridSize
+     * rows and gridSize columns. (Hint: use JPanel's setLayout()
+     * method.)
+     * 
+     * 3. Add centerPanel to the center of the window. (Hint: use JPanel's
+     * add() method and BorderLayout's CENTER variable.)
+     * 
+     * 4. Create an integer called imageld, initialized to O.
+     * 
+     * 5. Use a double for loop to go through each tile button in tile, using
+     * integers row and col as iteration variables for the for loops:
+     * a. Create an integer called x, initialized to the number of pixels
+     * to the left edge of the piece of the image needed for the tile
+     * button at row and col. (Hint: the x values needed will be
+     * O, 50, 100, and 150. How would you calculate those values
+     * from col and tileSize?)
+     * b. Create an integer called y, initialized to the number of pixels
+     * to the top edge of the piece of the image needed for the tile
+     * button at row and col. (Hint: the y values needed will be
+     * O, 50, 100, and 150. How would you calculate those values
+     * from row and tileSize?)
+     * c. Create a Bufferedlmage object called subimage, initialized
+     * by getting a subimage of image. (Hint: use Bufferedlmage's
+     * getSubimage() method, passing in the x and y coordinates,
+     * and width and height, of each piece of the image to retrieve.)
+     * d. Create a new Imagelcon object called imagelcon by calling
+     * the Imagelcon constructor with subimage.
+     * e. Initialize the tile at row and col to a new TileButton, passing
+     * in all the required values.
+     * f. Add the tile at row and col to the centerPanel.
+     * g. Increment imageld.
+     */
+    private void dividelmage() {
+        centerPanel.setLayout(new GridLayout(gridSize, gridSize));
+        add(centerPanel, BorderLayout.CENTER);
+
+        int imageId = 0;
+        for (int row = 0; row < gridSize; row++) {
+            for (int col = 0; col < gridSize; col++) {
+                int x = col*tileSize;
+                int y = row*tileSize;
+                BufferedImage subImage = image.getSubimage(x, y, tileSize, tileSize);
+                ImageIcon imagelcon = new ImageIcon(subImage);
+                tile[row][col] = new TileButton(imagelcon, imageId, row, col);
+                centerPanel.add(tile[row][col]);
+                imageId++;
+
+            }
+        }
+    }
+
+    /*
      * Create a new private method called initGUI(). It should take no
      * parameters and return nothing. In initGUI(), add a TitleLabel,
      * with text "Sliding Tiles", to the top of the window.
+     * 
+     * The initGUI() method is going to get quite large. Dividing large
+     * blocks of code into smaller sections, and labeling each section with
+     * a comment, makes the code easier to write now and easier to
+     * understand later. initGUI() could be divided into two sections, one for
+     * the main panel and the other for the button panel.
+     * 1. In initGUI(), add comments to label sections for the main panel
+     * and the button panel.
+     * 
+     * SlidingTiles will need to put images on the tile buttons in the
+     * constructor and again later in the program, so put that code in a
+     * separate method.
+     * 1. In the main panel section, call dividelmage().
      */
     private void initGUI() {
         JLabel titleLabel = new JLabel("Sliding Tiles");
         add(titleLabel, BorderLayout.PAGE_START);
+
+        // main panel
+        dividelmage();
+
+        // button panel
     }
 
     /*
@@ -100,8 +191,8 @@ public class SlidingTiles extends JFrame {
             setLocationRelativeTo(null);
             setVisible(true);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
-        } catch (Exception e) {
-            String message = "The image file " + FILENAME + "could not be opened";
+        } catch (IOException e) {
+            String message = "The image file " + FILENAME + " could not be opened";
             JOptionPane.showMessageDialog(this, message);
         }
     }
