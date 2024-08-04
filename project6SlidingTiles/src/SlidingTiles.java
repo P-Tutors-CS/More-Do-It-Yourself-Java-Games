@@ -12,6 +12,7 @@ will slide the clicked tile into that empty space. */
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import jdk.jfr.Event;
 
 public class SlidingTiles extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -96,24 +98,70 @@ public class SlidingTiles extends JFrame {
      * in all the required values.
      * f. Add the tile at row and col to the centerPanel.
      * g. Increment imageld.
+     * 
+     * 
+     * Add an action listener to process tile button clicks:
+     * 
+     * 1. Go back to SlidingTiles.java.
+     * 
+     * 2. In dividelmage(), as you create each tile, add an action listener
+     * to the tile. (Hint: use TileButton's addActionListener() method,
+     * with a new ActionListener object as the parameter value. In the
+     * ActionListener, add a public method called actionPerformed().
+     * actionPerformed() should have one parameter, an ActionEvent
+     * called e, and return nothing.
+     * 
+     * 3. In actionPerformed(), create a TileButton object called button,
+     * initialized by getting the source of e. (Hint: use ActionEvent's
+     * getSource() method. Hint: use Quick Fix to cast the returned
+     * value to a TileButton.)
+     * 4. Call clickedTile(), passing it button.
      */
     private void dividelmage() {
+
         centerPanel.setLayout(new GridLayout(gridSize, gridSize));
         add(centerPanel, BorderLayout.CENTER);
+        /*
+         * Normally you add all the components to the window, pack the
+         * window, then display the window. If you add or remove components
+         * later, the layout may need to be recalculated and components
+         * redisplayed. To do that, revalidate the container that holds the
+         * components.
+         * 
+         * Try It - Remove Tiles before Adding New Ones
+         * Currently dividelmage() adds tile buttons to the center panel. But
+         * what if dividelmage() gets called a second time? Adding tile buttons
+         * again will result in too many buttons!
+         * 
+         * Remove tile buttons in dividelmage() before adding new ones. After
+         * adding or removing components in a panel, SlidingTiles will need to
+         * revalidate the panel.
+         * 1. Remove all the components from centerPanel. (Hint: use JPane1's
+         * removeAll() method.)
+         * 2. Revalidate centerPane1. (Hint: use JPane1's revalidate() method.)
+         */
+        centerPanel.removeAll();
 
         int imageId = 0;
         for (int row = 0; row < gridSize; row++) {
             for (int col = 0; col < gridSize; col++) {
-                int x = col*tileSize;
-                int y = row*tileSize;
+                int x = col * tileSize;
+                int y = row * tileSize;
                 BufferedImage subImage = image.getSubimage(x, y, tileSize, tileSize);
                 ImageIcon imagelcon = new ImageIcon(subImage);
                 tile[row][col] = new TileButton(imagelcon, imageId, row, col);
+                tile[row][col].addActionListener(new ActionListener() {
+                    public void actionPerformed(Event e){
+                        TileButton button = (TitleButton) e.getSource();
+                        clickedTile(button);
+                    }
+                });
                 centerPanel.add(tile[row][col]);
                 imageId++;
 
             }
         }
+        centerPanel.revalidate();
     }
 
     /*

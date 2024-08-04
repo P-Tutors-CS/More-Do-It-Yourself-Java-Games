@@ -161,4 +161,70 @@ public class TileButton extends JButton {
         tileSize = size;
         maxTiles = max;
     }
+
+    /*
+     * The window should still display the original image, not scrambled,
+     * and with the bottom right corner missing, just like before.
+     * Try It - Add TileButton Methods for Swapping Images
+     * SlidingTiles will need to check whether the tile button has an image.
+     * The tile button will have no image if the value of its icon is null.
+     * 
+     * 1. Add a public method called hasNoImage(). It should take no
+     * parameters and return a boolean.
+     * 
+     * 2. Create a boolean called hasNoImage, initialized tofalse.
+     * 
+     * 3. If the tile button's icon value is null, set hasNoImage to true.
+     * (Hint: use JButton's getlcon() method.)
+     * 
+     * 4. Return hasNoImage.
+     */
+    public boolean hasNoImage() {
+        boolean hasNoImage = false;
+        if (getIcon() == null) {
+            hasNoImage = true;
+        }
+        return hasNoImage;
+    }
+
+    /*
+     * SlidingTiIes will need to swap images between tile buttons, thus
+     * making the window look like the tile was moved.
+     * 
+     * 1. Add a public method called swap(). It should take one parameter,
+     * a TileButton called otherTile and return nothing.
+     * 
+     * 2. Create an Imagelcon object called otherlmagelcon, initialized
+     * by getting the image from otherTile. (Hint: use TileButton's
+     * getlmage() method.)
+     * 
+     * 3. Create an integer called otherlmageld, initialized by getting
+     * the imageld from otherTile. (Hint: use TileButton's getlmageld()
+     * method.)
+     * 
+     * 4. Set otherTile to use this tile button's imagelcon and imageld.
+     * (Hint: use setlmage() with the instance variables imagelcon and
+     * imageld. Hint: use this.)
+     * 
+     * 5. Set this tile button to use otherlmagelcon and otherlmageld.
+     * (Hint: use setlmage().)
+     */
+    public void swap(TileButton otherTile) {
+        ImageIcon otherImageIcon = otherTile.getImage();
+        int otherlmageld = otherTile.getImageId();
+        otherTile.setImage(imageIcon, imageId);
+        setImage(otherImageIcon, otherlmageld);
+
+    }
+
+    /*
+     * SlidingTiIes needs a way to show the image after the puzzle is solved.
+     * 1. Add a public method called showlmage(). It should take no
+     * parameters and return nothing.
+     * 2. Set the tile button's icon to imagelcon. (Hint: use JButton's
+     * setlcon() method.)
+     */
+    public void showImage(){
+        setIcon(imageIcon);
+    }
 }
