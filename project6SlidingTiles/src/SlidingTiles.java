@@ -12,10 +12,12 @@ will slide the clicked tile into that empty space. */
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -45,6 +47,11 @@ public class SlidingTiles extends JFrame {
      * initialized to null.
      */
     private static final String FILENAME = "project6SlidingTiles\\slidingTilesImage.jpg";
+    private static final int UP = 0;
+    private static final int DOWN = 1;
+    private static final int LEFT = 2;
+    private static final int RIGHT = 3;
+
     private int tileSize = 50;
     private int gridSize = 4;
     private BufferedImage image = null;
@@ -58,6 +65,161 @@ public class SlidingTiles extends JFrame {
      */
     private TileButton[][] tile = new TileButton[gridSize][gridSize];
     private JPanel centerPanel = new JPanel();
+
+    /*
+     * Try It - Fill In the Missing Tile When the Puzzle is Solved
+     * When the puzzle is solved, SlidingTiles will need to fill in the missing
+     * portion of the image. How will the SlidingTiles check whether the
+     * puzzle is solved? By checking whether all the image IDs are in order.
+     * 
+     * 1. Add a private method called imagesInOrder(). It should take no
+     * parameters and return a boolean.
+     * 
+     * 2. Create an integer called id, initialized to O.
+     * 
+     * 3. Create a boolean called inOrder, initialized to true.
+     * 
+     * 4. Potentially loop through all the rows and columns of tile,
+     * continuing while inOrder is true. (Hint: use integers row and col
+     * for the iteration variables. Hint: in the for loop for row, continue
+     * while row is less than gridSize and inOrder is true. Write similar
+     * code in the for loop for col.)
+     * 
+     * a. Create an integer called currentld, initialized to the imageld
+     * of the tile at row and col. (Hint: use TileButton's getlmageld()
+     * method.)
+     * 
+     * b. If currentld is not equal to id, set inOrder to false.
+     * 
+     * c. Increment id.
+     * 
+     * 5. Return inOrder.
+     */
+    private boolean imagesInOrder(){
+        int id = 0;
+        boolean inOrder = ture;
+
+        
+        return inOrder;
+    }
+    /*
+     * If a tile button is clicked that is next to, but not diagonal to, a tile
+     * button with no image, SlidingTiles will need to swap images between
+     * the clicked button and the button with no image.
+     * 
+     * 1. Create a private method called clickedTile(). It should take one
+     * parameter, a TileButton called clickedTile, and return nothing.
+     * 
+     * 2. Create two integers called row and col, initialized by getting the
+     * row and column values of clickedTile, respectively. (Hint: use
+     * TileButton's getRow() and getCol() methods.)
+     * 
+     * 3. If row is not the first row and the tile above the clicked button has
+     * no image, swap clickedTile with that tile. (Hint: depending on the
+     * value of row, how do you check whether a row exists above the
+     * clicked tile button? Hint: use TileButton's hasNoImage() method.
+     * Hint: use TileButton's swap() method.)
+     * 
+     * 4. Otherwise, if row is not the last row and the tile below the clicked
+     * button has no image, swap clickedTiIe with that tile. (Hint: use
+     * TileButton's hasNoImage() method. Hint: use TileButton's swap()
+     * method.)
+     * 
+     * 5. Otherwise, if col is not the first column and the tile to the
+     * left of the clicked button has no image, swap clickedTile with
+     * that tile. (Hint: use TileButton's hasNoImage() method. Hint: use
+     * TileButton's swap() method.)
+     * 
+     * 6. Otherwise, if col is not the last column and the tile to the
+     * right of the clicked button has no image, swap clickedTile with
+     * that tile. (Hint: use TileButton's hasNoImage() method. Hint: use
+     * TileButton's swap() method.)
+     */
+    private void clickedTile(TileButton clickedTile) {
+        int row = clickedTile.getRow();
+        int col = clickedTile.getCol();
+        if (row > 0 && tile[row - 1][col].hasNoImage()) {
+            clickedTile.swap(tile[row - 1][col]);
+        } else if (row < gridSize - 1 && tile[row + 1][col].hasNoImage()) {
+            clickedTile.swap(tile[row + 1][col]);
+        } else if (col > 0 && tile[row][col - 1].hasNoImage()) {
+            clickedTile.swap(tile[row][col - 1]);
+        } else if (col < gridSize - 1 && tile[row][col + 1].hasNoImage()) {
+            clickedTile.swap(tile[row][col + 1]);
+        }
+    }
+
+    /*
+     * SlidingTiles will scramble the images by repeatedly swapping images
+     * with a random tile button next to the tile button with no image.
+     * 
+     * 1. Add a new private method called scramble(). It should take no
+     * parameters and return nothing.
+     * 
+     * 2. Add integers called openRow and openCol, set to the bottom
+     * row and right column, because the game always starts with
+     * the bottom right tile button having no image. (Hint: calculate
+     * openRow and openCol using gridSize.)
+     * 
+     * 3. Create a Random object called rand, initialized by calling
+     * Random's constructor.
+     * 
+     * 4. Create a loop that will repeat many times. (Hint: a suggested
+     * value is 25 times gridSize.) In the loop:
+     * 
+     * a. Create an integer called direction, initialized by picking a
+     * random number from O to 3. (Hint: use gridSize.)
+     * 
+     * b. Use a switch block to run different code, based on direction.
+     * (Hint: use the UP, DOWN, LEFT, and RIGHT in the case
+     * statements.)
+     * 
+     * c. To move up, if the open row is not the first row:
+     * 
+     * a. Swap the tile at the openRow and openCoI with the
+     * tile in the previous row. (Hint: use TileButtonis swap()
+     * method.)
+     * 
+     * b. Update openRow to the previous row.
+     * 
+     * d. Repeat similar code for each direction.
+     */
+    private void scramble() {
+        int openRow = gridSize - 1;
+        int openCol = gridSize - 1;
+
+        Random rand = new Random();
+
+        for (int i = 0; i < 25 * gridSize; i++) {
+            int direction = rand.nextInt(gridSize);
+            switch (direction) {
+                case UP:
+                    if (openRow > 0) {
+                        tile[openRow][openCol].swap(tile[openRow - 1][openCol]);
+                        openRow--;
+                    }
+                    break;
+                case DOWN:
+                    if (openRow < gridSize - 1) {
+                        tile[openRow][openCol].swap(tile[openRow + 1][openCol]);
+                        openRow++;
+                    }
+                    break;
+                case LEFT:
+                    if (openCol > 0) {
+                        tile[openRow][openCol].swap(tile[openRow][openCol - 1]);
+                        openCol--;
+                    }
+                    break;
+                case RIGHT:
+                    if (openCol < gridSize - 1) {
+                        tile[openRow][openCol].swap(tile[openRow][openCol + 1]);
+                        openCol++;
+                    }
+
+            }
+        }
+    }
 
     /*
      * Divide the image into gridSize rows and gridSize columns of
@@ -116,6 +278,8 @@ public class SlidingTiles extends JFrame {
      * getSource() method. Hint: use Quick Fix to cast the returned
      * value to a TileButton.)
      * 4. Call clickedTile(), passing it button.
+     * 
+     * Call scramble() at the end of dividelmage().
      */
     private void dividelmage() {
 
@@ -151,8 +315,9 @@ public class SlidingTiles extends JFrame {
                 ImageIcon imagelcon = new ImageIcon(subImage);
                 tile[row][col] = new TileButton(imagelcon, imageId, row, col);
                 tile[row][col].addActionListener(new ActionListener() {
-                    public void actionPerformed(Event e){
-                        TileButton button = (TitleButton) e.getSource();
+                    // @Override
+                    public void actionPerformed(ActionEvent e) {
+                        TileButton button = (TileButton) e.getSource();
                         clickedTile(button);
                     }
                 });
@@ -162,6 +327,7 @@ public class SlidingTiles extends JFrame {
             }
         }
         centerPanel.revalidate();
+        scramble();
     }
 
     /*
