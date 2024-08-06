@@ -3,9 +3,9 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch SlidingTiles",
+            "name": "Launch MazeGenerator",
             "request": "launch",
-            "mainClass": "SlidingTiles",
+            "mainClass": "MazeGenerator",
             "projectName": "More-Do-It-Yourself-Java-Games",
             "classPaths": [
                 "${workspaceFolder}/bin",
