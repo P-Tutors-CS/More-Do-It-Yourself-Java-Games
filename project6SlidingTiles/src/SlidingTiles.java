@@ -10,6 +10,7 @@ To slide a tile, you must click a tile next to the empty space. Doing so
 will slide the clicked tile into that empty space. */
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,15 +19,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import jdk.jfr.Event;
 
 public class SlidingTiles extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -95,13 +95,23 @@ public class SlidingTiles extends JFrame {
      * 
      * 5. Return inOrder.
      */
-    private boolean imagesInOrder(){
+    private boolean imagesInOrder() {
         int id = 0;
-        boolean inOrder = ture;
+        boolean inOrder = true;
 
-        
+        for (int row = 0; row < gridSize; row++) {
+
+            for (int col = 0; col < gridSize; col++) {
+                int currentid = tile[row][col].getImageId();
+                if (currentid != id) {
+                    inOrder = false;
+                }
+                id++;
+            }
+        }
         return inOrder;
     }
+
     /*
      * If a tile button is clicked that is next to, but not diagonal to, a tile
      * button with no image, SlidingTiles will need to swap images between
@@ -134,6 +144,18 @@ public class SlidingTiles extends JFrame {
      * right of the clicked button has no image, swap clickedTile with
      * that tile. (Hint: use TileButton's hasNoImage() method. Hint: use
      * TileButton's swap() method.)
+     * 
+     * SlidingTiles will need to check whether the images are in order every
+     * time a tile button is clicked.
+     * 
+     * 1. Add code to the end of clickedTile() to check whether the
+     * images are in order. If the images are in order: (Hint: use
+     * imagesInOrder().)
+     * 
+     * a. Show the image for the tile in the bottom right corner.
+     * (Hint: use gridSize to calculate the row and column of the
+     * bottom right tile button. Hint: use TileButton's showlmage()
+     * method.)
      */
     private void clickedTile(TileButton clickedTile) {
         int row = clickedTile.getRow();
@@ -146,6 +168,10 @@ public class SlidingTiles extends JFrame {
             clickedTile.swap(tile[row][col - 1]);
         } else if (col < gridSize - 1 && tile[row][col + 1].hasNoImage()) {
             clickedTile.swap(tile[row][col + 1]);
+        }
+
+        if (imagesInOrder()) {
+            tile[gridSize - 1][gridSize - 1].showImage();
         }
     }
 
@@ -331,6 +357,52 @@ public class SlidingTiles extends JFrame {
     }
 
     /*
+     * The scramble() method expects the tile button with the missing
+     * image to be in the bottom right corner. So SlidingTiles will need to
+     * start a new game with all the tile button images in correct order.
+     * 
+     * 1. Add a private method called newGame(). It should take no
+     * parameters and return nothing.
+     * 2. Create an integer called imageld, initialized to O.
+     * 3. Use a double for loop to go through each tile button in tile, using
+     * integers row and col as the iteration variables for the for loops:
+     * a. Create an integer called x, initialized to the number of pixels
+     * to the left edge of the piece of the image needed for the tile
+     * button at row and col. (Hint: the x values needed will be
+     * O, 50, 100, and 150. How would you calculate those values
+     * using col and tileSize?)
+     * b. Create an integer called y, initialized to the number of pixels
+     * to the top edge of the piece of the image needed for the tile
+     * button at row and col. (Hint: the y values needed will be
+     * O, 50, 100, and 150. How would you calculate those values
+     * using row and tileSize?)
+     * c. Create a Bufferedlmage object called subimage, initialized
+     * by getting a subimage of image. (Hint: use Bufferedlmage's
+     * getSubimage() method, passing in the x and y coordinates
+     * and width and height, of each piece of the image to retrieve.)
+     * d. Create a new Imagelcon object called imagelcon by calling
+     * the Imagelcon constructor with subimage.
+     * e. Set the image of the tile at row and col to be imagelcon with
+     * imageld for its image ID.
+     * f. Increment imageld.
+     * 4. After the loop, scramble the image. (Hint: use scramble().)
+     */
+    public void newGame() {
+        int imageId = 0;
+        for (int row = 0; row < gridSize; row++) {
+            for (int col = 0; col < gridSize; col++) {
+                int x = col * tileSize;
+                int y = row * tileSize;
+                BufferedImage subImage = image.getSubimage(x, y, tileSize, tileSize);
+                ImageIcon imageIcon = new ImageIcon(subImage);
+                tile[row][col].setImage(imageIcon, imageId);
+                imageId++;
+            }
+        }
+        scramble();
+    }
+
+    /*
      * Create a new private method called initGUI(). It should take no
      * parameters and return nothing. In initGUI(), add a TitleLabel,
      * with text "Sliding Tiles", to the top of the window.
@@ -347,6 +419,29 @@ public class SlidingTiles extends JFrame {
      * constructor and again later in the program, so put that code in a
      * separate method.
      * 1. In the main panel section, call dividelmage().
+     * 
+     * 
+     * Next, give the user a way to start a new game and scramble the puzzle
+     * again.
+     * 
+     * 1. In the button panel section in initGUI(), add a JPaneI object called
+     * buttonPaneI to the bottom of the window. (Hint: use JFrame's
+     * add() method and BorderLayout's PAGE_END variable.)
+     * 
+     * 2. Make buttonPanel black. (Hint: use JPanel's setBackground()
+     * method.)
+     * 
+     * 3. Create a JButton called scrambleButton, with text "Scramble".
+     * 
+     * 4. Add an action listener to scrambleButton to call newGame()
+     * when the button is clicked. (Hint: use JButton's
+     * addActionListener() method, with a new ActionListener object
+     * as the parameter value. In the ActionListener, add a public
+     * method called actionPerformed(). actionPerformed() should have
+     * one parameter, an ActionEvent e, and return nothing. In
+     * actionPerformed(), call newGame().)
+     * 
+     * 5. Add scrambleButton to buttonPanel.
      */
     private void initGUI() {
         JLabel titleLabel = new JLabel("Sliding Tiles");
@@ -356,6 +451,17 @@ public class SlidingTiles extends JFrame {
         dividelmage();
 
         // button panel
+        JPanel ButtoPanel = new JPanel();
+        add(ButtoPanel, BorderLayout.PAGE_END);
+        ButtoPanel.setBackground(Color.BLACK);
+
+        JButton scrambleButton = new JButton("Scramble");
+        scrambleButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newGame();
+            }
+        });
+        ButtoPanel.add(scrambleButton);
     }
 
     /*
