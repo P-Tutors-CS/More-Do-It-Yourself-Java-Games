@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch SlidingTiles",
+            "request": "launch",
+            "mainClass": "SlidingTiles",
+            "projectName": "More-Do-It-Yourself-Java-Games",
+            "classPaths": [
+                "${workspaceFolder}/bin",
+                "${workspaceFolder}/resources"
+            ]
+        }
+    ]
+}

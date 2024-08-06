@@ -18,6 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -46,7 +48,10 @@ public class SlidingTiles extends JFrame {
      * 4. Add a private Bufferedlmage instance variable called image,
      * initialized to null.
      */
-    private static final String FILENAME = "project6SlidingTiles\\slidingTilesImage.jpg";
+    // private static final String FILENAME =
+    // "project6SlidingTiles\\slidingTilesImage.jpg";
+    private static final String FILENAME = "/images/slidingTilesImage.jpg";
+
     private static final int UP = 0;
     private static final int DOWN = 1;
     private static final int LEFT = 2;
@@ -491,7 +496,11 @@ public class SlidingTiles extends JFrame {
      */
     public SlidingTiles() {
         try {
-            image = ImageIO.read(new File(FILENAME));
+            image = ImageIO.read(new File("project6SlidingTiles\\slidingTilesImage.jpg"));
+            if (image == null) {
+                URL imageUrl = SlidingTiles.class.getResource(FILENAME);
+                image = ImageIO.read(imageUrl);
+            }
 
             /*
              * Add code to the constructor of SlidingTiles before it
@@ -533,6 +542,16 @@ public class SlidingTiles extends JFrame {
             }
         });
 
+    }
+
+    public void loadImage() {
+        URL imgURL = getClass().getResource("/resources/your_image.png");
+        if (imgURL != null) {
+            ImageIcon icon = new ImageIcon(imgURL);
+            // Use the icon in your GUI component
+        } else {
+            System.err.println("Couldn't find file: your_image.png");
+        }
     }
 
 }

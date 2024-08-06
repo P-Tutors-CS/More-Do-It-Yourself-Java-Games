@@ -18,7 +18,28 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
 
 
+
 # project6SlidingTiles
+
+## Project Structure
+Ensure your project structure is as follows:
+
+
+project6SlidingTiles/
+│
+├── src/
+│   ├── SlidingTiles.java
+│   └── TileButton.java
+│
+├── resources/
+│   └── images/
+│       └── slidingTilesImage.jpg
+│
+├── bin/  (compiled .class files)
+│
+├── manifest.txt
+├── README.md
+└── SlidingTiles.jar
 
 ## How to Create a Standalone Executable JAR
 
@@ -45,7 +66,7 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 
 6. **Create the JAR File**:
     ```sh
-    jar cfm SlidingTiles.jar manifest.txt -C bin .
+    jar cfm SlidingTiles.jar manifest.txt -C bin . -C resources .
     ```
 
 7. **Ensure the JAR File Runs Correctly**:
@@ -378,3 +399,117 @@ project6SlidingTiles/
 - Make sure to replace placeholders (e.g., `your-app-name`) with actual values.
 
 By following these instructions, you'll be able to run your Java application both locally and on GitHub Pages for the static part and Heroku for the dynamic part.
+
+
+
+
+---
+
+
+# if imageUrl image issues:
+
+### Step 1: Verify Project Structure
+Ensure your project structure is correctly set up as follows:
+
+```
+project6SlidingTiles/
+│
+├── src/
+│   ├── SlidingTiles.java
+│   └── TileButton.java
+│
+├── resources/
+│   └── images/
+│       └── slidingTilesImage.jpg
+│
+├── bin/  (compiled .class files)
+│
+├── manifest.txt
+├── README.md
+└── SlidingTiles.jar
+```
+
+### Step 2: Update Code to Load Resource
+
+Make sure your `SlidingTiles.java` code correctly uses `getResource` to load the image. Here’s a corrected version of your code:
+
+```java
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+public class SlidingTiles {
+    ...
+    // example 
+    private void loadResources() {
+        try {
+            // Use getResource to find the image
+            img = ImageIO.read(SlidingTiles.class.getResource("/images/slidingTilesImage.jpg"));
+            if (img == null) {
+                System.err.println("Image not found!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ...
+}
+```
+
+### Step 3: Update `launch.json` in VS Code
+
+Ensure you have a `launch.json` file in the `.vscode` directory that includes the `resources` directory in the classpath. If the file does not exist, create it.
+
+#### Example `launch.json`:
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch SlidingTiles",
+            "request": "launch",
+            "mainClass": "SlidingTiles",
+            "projectName": "More-Do-It-Yourself-Java-Games",
+            "classPaths": [
+                "${workspaceFolder}/bin",
+                "${workspaceFolder}/resources"
+            ]
+        }
+    ]
+}
+```
+
+### Step 4: Update `settings.json` to Include Resources
+
+Ensure `settings.json` in the `.vscode` directory includes the `resources` directory.
+
+#### Example `settings.json`:
+```json
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "resources"
+    ]
+}
+```
+
+### Step 5: Clean and Rebuild the Project
+
+1. **Clean the Project**:
+   - Delete the contents of the `bin` directory to ensure a clean build.
+
+2. **Rebuild the Project**:
+   - Compile your project again using the build tasks in VS Code or manually using `javac`.
+
+```sh
+javac -d bin src/*.java
+```
+
+### Step 6: Run the Project
+
+Use the play button in the Debug panel to run your project. The `launch.json` configuration should now ensure the resources are correctly included in the classpath.
+
