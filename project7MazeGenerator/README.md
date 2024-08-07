@@ -474,15 +474,17 @@ Ensure you have a `launch.json` file in the `.vscode` directory that includes th
             "type": "java",
             "name": "Launch MazeGenerator",
             "request": "launch",
-            "mainClass": "MazeGenerator",
-            "projectName": "More-Do-It-Yourself-Java-Games",
-            "classPaths": [
-                "${workspaceFolder}/bin",
-                "${workspaceFolder}/resources"
-            ]
+            "mainClass": "ptutorscs.java.doityourself.MazeGenerator",
+            "projectName": "project7MazeGenerator",
+            "vmArgs": "-cp \"bin;resources\"",
+            "cwd": "${workspaceFolder}/project7MazeGenerator",
+            "preLaunchTask": "java: compile",
+            "console": "internalConsole"
         }
     ]
 }
+
+
 ```
 
 ### Step 4: Update `settings.json` to Include Resources
@@ -492,13 +494,18 @@ Ensure `settings.json` in the `.vscode` directory includes the `resources` direc
 #### Example `settings.json`:
 ```json
 {
-    "java.project.sourcePaths": ["src"],
+    "java.project.sourcePaths": [
+        "src"
+    ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "resources"
-    ]
+        "lib/**/*.jar"
+    ],
+    "files.autoSave": "afterDelay",
+    "java.debug.settings.console": "internalConsole"
 }
+
+
 ```
 
 ### Step 5: Clean and Rebuild the Project

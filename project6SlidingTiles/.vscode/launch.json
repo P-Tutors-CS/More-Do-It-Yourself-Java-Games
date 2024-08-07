@@ -3,14 +3,14 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch MazeGenerator",
+            "name": "Launch SlidingTiles",
             "request": "launch",
-            "mainClass": "MazeGenerator",
-            "projectName": "More-Do-It-Yourself-Java-Games",
-            "classPaths": [
-                "${workspaceFolder}/bin",
-                "${workspaceFolder}/resources"
-            ]
+            "mainClass": "ptutorscs.java.doityourself.SlidingTiles",
+            "projectName": "project6SlidingTiles",
+            "vmArgs": "-cp \"bin;resources\"",
+            "cwd": "${workspaceFolder}/project6SlidingTiles",
+            "preLaunchTask": "java: compile",
+            "console": "internalConsole"
         }
     ]
 }
