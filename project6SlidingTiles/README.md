@@ -23,7 +23,7 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 
 ## Project Structure
 Ensure your project structure is as follows:
-
+```
 
 project6SlidingTiles/
 ├── src/
@@ -42,7 +42,7 @@ project6SlidingTiles/
 ├── README.md
 ├── SlidingTiles.jar
 
-
+```
 ## How to Create a Standalone Executable JAR
 
 ### Step-by-Step Instructions to Create a standalone JAR file for the `project6SlidingTiles` project.
