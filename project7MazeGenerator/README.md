@@ -26,20 +26,22 @@ Ensure your project structure is as follows:
 
 
 project7MazeGenerator/
-│
 ├── src/
-│   ├── MazeGenerator.java
-│   └── TileButton.java
-│
-├── resources/
-│   └── images/
-│       └── MazeGeneratorImage.jpg
-│
-├── bin/  (compiled .class files)
-│
+│   ├── ptutorscs/
+│   │   └── java/
+│   │       └── doityourself/
+│   │           ├── MazeGenerator.java
+│   │           └── TileButton.java
+│   └── resources/
+│       └── images/
+│           └── MazeGeneratorImage.jpg
+├── bin/
+├── lib/
+├── .vscode/
 ├── manifest.txt
 ├── README.md
-└── MazeGenerator.jar
+├── MazeGenerator.jar
+
 
 ## How to Create a Standalone Executable JAR
 
@@ -53,7 +55,7 @@ project7MazeGenerator/
 
 2. **Compile the Java Files - Ensure all your Java files are compiled and located in the bin directory.**:
     ```sh
-        javac -d bin src/*.java
+        javac -d bin src/ptutorscs/java/doityourself/*.java
     ```
 
 3. **Create the Manifest File**:
@@ -413,20 +415,22 @@ Ensure your project structure is correctly set up as follows:
 
 ```
 project7MazeGenerator/
-│
 ├── src/
-│   ├── MazeGenerator.java
-│   └── TileButton.java
-│
-├── resources/
-│   └── images/
-│       └── MazeGeneratorImage.jpg
-│
-├── bin/  (compiled .class files)
-│
+│   ├── ptutorscs/
+│   │   └── java/
+│   │       └── doityourself/
+│   │           ├── MazeGenerator.java
+│   │           └── TileButton.java
+│   └── resources/
+│       └── images/
+│           └── MazeGeneratorImage.jpg
+├── bin/
+├── lib/
+├── .vscode/
 ├── manifest.txt
 ├── README.md
-└── MazeGenerator.jar
+├── MazeGenerator.jar
+
 ```
 
 ### Step 2: Update Code to Load Resource

@@ -1,3 +1,4 @@
+package ptutorscs.java.doityourself;
 /* 
 SlidingTi1es needs tile buttons that include image and row and
 column information. The tile button never actually moves. Ifthe tile

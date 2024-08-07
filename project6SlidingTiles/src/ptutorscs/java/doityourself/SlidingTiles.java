@@ -1,3 +1,4 @@
+package ptutorscs.java.doityourself;
 
 /* Project 6 - Sliding Tiles
 Next youlll create the Sliding Tiles game. A photo will be divided
