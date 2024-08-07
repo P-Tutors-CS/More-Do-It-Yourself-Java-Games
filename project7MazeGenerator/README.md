@@ -24,7 +24,7 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 ## Project Structure
 Ensure your project structure is as follows:
 
-
+```
 project7MazeGenerator/
 ├── src/
 │   ├── ptutorscs/
@@ -41,7 +41,7 @@ project7MazeGenerator/
 ├── manifest.txt
 ├── README.md
 ├── MazeGenerator.jar
-
+```
 
 ## How to Create a Standalone Executable JAR
 
