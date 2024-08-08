@@ -131,7 +131,7 @@ public class MazeGenerator extends JFrame {
         // listeners
         addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent e){
+            public void keyReleased(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 moveBall(keyCode);
             }
