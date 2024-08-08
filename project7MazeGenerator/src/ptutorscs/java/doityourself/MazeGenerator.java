@@ -47,7 +47,11 @@ public class MazeGenerator extends JFrame {
      * MazeGenerator object on the event queue.
      */
     private static final long serialVersionUID = 1L;
+    /* retular maze */
     private JLabel titLabel = new JLabel("Maze Generator");
+
+    /* Anit maze */
+    // private JLabel titLabel = new JLabel("Anti-Maze");
 
     /*
      * Try It - Put a Grid of Cells with

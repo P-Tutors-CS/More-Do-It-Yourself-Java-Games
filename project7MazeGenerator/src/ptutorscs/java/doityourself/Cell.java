@@ -158,12 +158,22 @@ public class Cell extends JPanel {
         g.setColor(Color.BLACK);
 
         // draw the walls
+
+        /* regular maze */
         if (isWall(TOP)) {
             g.drawLine(0, 0, SIZE, 0);
         }
         if (isWall(LEFT)) {
             g.drawLine(0, 0, 0, SIZE);
         }
+      
+        /* Anti Maze */
+        // if (!isWall(TOP)) {
+        //     g.drawLine(0, 0, SIZE, 0);
+        // }
+        // if (!isWall(LEFT)) {
+        //     g.drawLine(0, 0, 0, SIZE);
+        // }
         // draw the path
         g.setColor(Color.GREEN);
         if(path[TOP]){
