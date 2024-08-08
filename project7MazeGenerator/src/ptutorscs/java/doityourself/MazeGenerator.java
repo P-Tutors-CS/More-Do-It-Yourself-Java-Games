@@ -4,13 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -59,8 +63,8 @@ public class MazeGenerator extends JFrame {
      * 4. Create a private JPanel instance variable called
      * mazePanel, initialized by calling JPanel's constructor.
      */
-    private int rows = 5;
-    private int cols = 5;
+    private int rows = 30;
+    private int cols = 30;
     Cell[][] cell = new Cell[rows][cols];
     private JPanel mazePanel = new JPanel();
 
@@ -112,6 +116,28 @@ public class MazeGenerator extends JFrame {
      * key listener to the window itself (the JFrame).
      * 1. In the listeners section of initGUI(), add a key listener to
      * the window by inserting code exactly as shown.
+     * 
+     * Try It - Add a "New Maze" Button
+     * Another improvement to this game would be to add a button
+     * to generate a new maze.
+     * 1. In the button panel section of initGUI(), create a new
+     * JPane1 object called buttonPanel.
+     * 2. Make buttonPanel black. (Hint: use JButton's
+     * setBack ound() method.)
+     * 3. Add buttonPanel to the bottom of the window. (Hint: use
+     * JFrame's add() method and BorderLayout's PAGE_END
+     * variable.)
+     * 4. Create a new JButton object called newMazeButton, with
+     * text "New Maze".
+     * 5. Add an action listener to newMazeButton to call
+     * newMaze() when the button is clicked. (Hint: use
+     * JButton's addActionListener() method, with a new
+     * ActionListener object as the parameter value. In
+     * the ActionListener, add a public method called
+     * actionPerformed(). actionPerformed() should have one
+     * parameter, an ActionEvent, and return nothing. In
+     * actionPerformed(), call newMaze().)
+     * 6. Add newMazeButton to buttonPanel.
      */
     private void initGUI() {
         add(titLabel, BorderLayout.PAGE_START);
@@ -127,6 +153,18 @@ public class MazeGenerator extends JFrame {
         centerPanel.add(mazePanel);
 
         // button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.BLACK);
+        add(buttonPanel, BorderLayout.PAGE_END);
+
+        JButton newMazeButton = new JButton("New Maze");
+        newMazeButton.setFocusable(false);
+        newMazeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newMaze();
+            }
+        });
+        buttonPanel.add(newMazeButton);
 
         // listeners
         addKeyListener(new KeyAdapter() {
@@ -166,8 +204,21 @@ public class MazeGenerator extends JFrame {
      * Cell's setCurrent() method.)
      * 4. Set the cell at endRow and endCol to be the end cell. (Hint:
      * use Cell's setEnd() method.)
+     * 
+     * Try It - Remove and Revalidate Components
+     * Why doesn't the New Maze button do anything? Because all
+     * the old cells are still on the panel and new cells were simply
+     * added beyond the size of the window. The old cells must be
+     * removed and the panel redisplayed to show the new cells.
+     * 1. In newMaze(), remove all the components from
+     * mazePanel at the beginning of the method. (Hint: use
+     * JPanel's removeAll() method.)
+     * 2. At the end of the method, rebuild all the components
+     * that are in mazePanel. (Hint: use JPanel's revalidate()
+     * method.)
      */
     public void newMaze() {
+        mazePanel.removeAll();
         mazePanel.setLayout(new GridLayout(rows, cols));
         cell = new Cell[rows][cols];
 
@@ -185,6 +236,8 @@ public class MazeGenerator extends JFrame {
         endCol = cols - 1;
         cell[row][col].setCurrent(true);
         cell[endRow][endCol].setEnd(true);
+
+        mazePanel.revalidate();
     }
 
     /*
@@ -278,6 +331,156 @@ public class MazeGenerator extends JFrame {
                 r = nextCell.getRow();
                 c = nextCell.getCol();
             }
+        }
+    }
+
+    /*
+     * You should have syntax errors because you haven't written
+     * the moveBall() method yet. But before you write the
+     * moveBall() method, create another method that moveBall()
+     * will use.
+     * 1. Add a private method called moveTo(). It should take
+     * two parameters, integers called nextRow and nextCol,
+     * and return nothing.
+     * 2. Set the cell at row and col to no longer be the current cell.
+     * (Hint: use Cell's setCurrent() method.)
+     * 3. Set row and col to the values of nextRow and nextCol,
+     * respectively.
+     * 4. Set the cell at row and col to be the current cell.
+     * 
+     * Next, draw a line showing the path taken through the maze.
+     * You'll need to set the direction from which the path left the
+     * previous cell and the direction to which it entered the next
+     * cell.
+     * 1. Update moveTo() to take two more parameters, two
+     * integers called firstDirection and secondDirection.
+     * 2. Set the path of the first cell to firstDirection. (Hint: use
+     * Cell's addPath().)
+     * 3. Set the path of the second cell to secondDirection. (Hint:
+     * use Cell's addpath().)
+     */
+    private void moveTo(int nextRow, int nextCol, int firstDirection, int secondDirection) {
+        cell[row][col].setCurrent(false);
+        cell[row][col].addPath(firstDirection);
+        row = nextRow;
+        col = nextCol;
+        cell[row][col].setCurrent(true);
+        cell[row][col].addPath(secondDirection);
+    }
+
+    /*
+     * Now write the code that will move the ball in the right
+     * direction.
+     * 1. Add a private method called moveBall(). It should take
+     * one parameter, an integer called direction, and return
+     * nothing.
+     * 2. Use a switch block that tests direction:
+     * a. If direction is VK_UP: (Hint: use KeyEvent's VK_UP
+     * variable for a case in the switch block.)
+     * a. Ifthe cell at row and col doesn't have a top wall:
+     * (Hint: use Cell's isWall() method and Cell's TOP
+     * variable.)
+     * b. Move to the previous row, same column. (Hint:
+     * call moveTo() with row- I and col.)
+     * b. Write similar code so if direction is VK_DOWN and
+     * if this cell doesn't have a bottom wall, move to the
+     * next row, same column.
+     * c. Write similar code so if direction is VK_LEFT and if
+     * this cell doesn't have a left side wall, move to the
+     * same row, previous column.
+     * d. Write similar code so if direction is VK_RIGHT and if
+     * this cell doesn't have a right side wall, move to the
+     * same row, next column.
+     * 
+     * Try It - Move the Ball Further
+     * With Each Keystroke
+     * One more thing would make movement through the maze
+     * a little easier. Every time you press a cursor movement key,
+     * continue moving the ball in a straight line until it reaches an
+     * opening it could turn into, or until the ball is stopped by a
+     * wall.
+     * 1. Add code to each case in moveBall(). (Hint: use Cell's
+     * isWall() and moveTo() methods and Cell's TOP, BOTTOM,
+     * LEFT, and RIGHT variables as needed.)
+     * a. After moving up, while the cell at row and col
+     * doesn't have a top wall and has both left and right
+     * walls, move to the previous row.
+     * b. After moving down, while the cell at row and col
+     * doesn't have a bottom wall and has both left and
+     * right walls, move to the next row.
+     * c. After moving left, while the cell at row and col
+     * doesn't have a left wall and has both top and bottom
+     * walls, move to the previous column.
+     * d. After moving right, while the cell at row and col
+     * doesn't have a right wall and has both top and
+     * bottom walls, move to the next column.
+     * 
+     * Try It - When the Puzzle is Solved
+     * How can you tell if the user solved the puzzle? The puzzle is
+     * solved if the ball moved to the cell at end row and end col.
+     * 1. At the end of moveBall(), check whether row and col are
+     * at endRow and endCol. If they are:
+     * a. Create a string called message, congratulating the
+     * user on solving the maze.
+     * b. Display message in a message dialog. (Hint: use
+     * JOptionPane's showMessageDialog() method.)
+     */
+    private void moveBall(int direction) {
+        switch (direction) {
+            case KeyEvent.VK_UP:
+                // move up if this cell does not have a top wall
+                if (!cell[row][col].isWall(Cell.TOP)) {
+                    moveTo(row - 1, col, Cell.TOP, Cell.BOTTOM);
+                    // move up more if this is a long column
+                    while (!cell[row][col].isWall(Cell.TOP)
+                            && cell[row][col].isWall(Cell.LEFT)
+                            && cell[row][col].isWall(Cell.RIGHT)) {
+                        moveTo(row - 1, col, Cell.TOP, Cell.BOTTOM);
+                    }
+                }
+
+                break;
+            case KeyEvent.VK_DOWN:
+                // move down if this cell does not have a bottom wall
+                if (!cell[row][col].isWall(Cell.BOTTOM)) {
+                    moveTo(row + 1, col, Cell.BOTTOM, Cell.TOP);
+                    // move down more if this is a long column
+                    while (!cell[row][col].isWall(Cell.BOTTOM)
+                            && cell[row][col].isWall(Cell.LEFT)
+                            && cell[row][col].isWall(Cell.RIGHT)) {
+                        moveTo(row + 1, col, Cell.BOTTOM, Cell.TOP);
+                    }
+                }
+                break;
+            case KeyEvent.VK_LEFT:
+                // move left if this cell does not have a left wall
+                if (!cell[row][col].isWall(Cell.LEFT)) {
+                    moveTo(row, col - 1, Cell.LEFT, Cell.RIGHT);
+                    // move left more if this is a long column
+                    while (!cell[row][col].isWall(Cell.LEFT)
+                            && cell[row][col].isWall(Cell.TOP)
+                            && cell[row][col].isWall(Cell.BOTTOM)) {
+                        moveTo(row, col - 1, Cell.LEFT, Cell.RIGHT);
+                    }
+                }
+                break;
+            case KeyEvent.VK_RIGHT:
+                // move right if this cell does not have a right wall
+                if (!cell[row][col].isWall(Cell.RIGHT)) {
+                    moveTo(row, col + 1, Cell.RIGHT, Cell.LEFT);
+                    // move right more if this is a long column
+                    while (!cell[row][col].isWall(Cell.RIGHT)
+                            && cell[row][col].isWall(Cell.TOP)
+                            && cell[row][col].isWall(Cell.BOTTOM)) {
+                        moveTo(row, col + 1, Cell.RIGHT, Cell.LEFT);
+                    }
+                }
+                break;
+        }
+        // puzzle solved?
+        if (row == endRow && col == endCol) {
+            String message = "Congratulations! You solved it.";
+            JOptionPane.showMessageDialog(this, message);
         }
     }
 
