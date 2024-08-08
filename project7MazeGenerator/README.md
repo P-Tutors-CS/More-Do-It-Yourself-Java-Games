@@ -41,8 +41,13 @@ project7MazeGenerator/
 ├── manifest.txt
 ├── README.md
 ├── MazeGenerator.jar
+<<<<<<< HEAD
 
 ```
+=======
+```
+
+>>>>>>> da1e03ce65471ab7002b062f68f531e1e190f05c
 ## How to Create a Standalone Executable JAR
 
 ### Step-by-Step Instructions to Create a standalone JAR file for the `project7MazeGenerator` project.
